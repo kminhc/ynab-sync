@@ -1,0 +1,15 @@
+- Upload fresh bank transactions to YNAB
+- Supported banks: OP, Spankki
+- Should be stateless
+- Runs a command (with appeal https://github.com/larryhastings/appeal) (can be used in cron):
+   Params:
+   - YNAB auth token
+   - YNAB budget_id
+   - YNAB account_id 
+   - secrets from GoCardless
+   - account_id / name of the bank insitution to upload
+   - transactions time range
+- Command should report number of imported and duplicated transactions
+- Nice to have:
+  - command that build authorization link (might be needed every 3 months)
+  - command that provide budget_id/account_id information (list of available with name)

@@ -1,0 +1,17 @@
+[tool.black]
+
+
+[tool.pyright]
+include = ["ynab_sync"]
+exclude = []
+
+venv = "venv"
+stubPath = ""
+venvPath = "."
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+pythonVersion = "3.11"
+pythonPlatform = "Linux"
+
