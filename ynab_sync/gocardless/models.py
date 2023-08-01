@@ -4,28 +4,32 @@ from decimal import Decimal
 from pydantic import BaseModel, Field
 
 
-class TransactionAmount(BaseModel):
+class GoCardlessTransactionAmount(BaseModel):
     amount: Decimal
     currency: str
 
 
-class Transaction(BaseModel):
+class GoCardlessTransaction(BaseModel):
     transaction_id: str = Field(alias="transactionId")
     booking_date: date = Field(alias="bookingDate")
     value_date: date = Field(alias="valueDate")
-    transaction_amount: TransactionAmount = Field(alias="transactionAmount")
+    transaction_amount: GoCardlessTransactionAmount = Field(alias="transactionAmount")
     debtor_name: str | None = Field(alias="debtorName", default=None)
+    creditor_name: str | None = Field(alias="creditorName", default=None)
     debtor_account: dict | None = Field(alias="debtorAccount", default=None)
     remittance_information_unstructured: str = Field(
-        alias="remittanceInformationUnstructured"
+        alias="remittanceInformationUnstructured", default=""
     )
-    bank_transaction_code: str = Field(alias="bankTransactionCode")
+    proprietary_bank_transaction_code: str | None = Field(
+        alias="proprietaryBankTransactionCode", default=None
+    )
+    bank_transaction_code: str | None = Field(alias="bankTransactionCode", default=None)
 
 
-class Transactions(BaseModel):
-    booked: list[Transaction]
+class GoCardlessTransactions(BaseModel):
+    booked: list[GoCardlessTransaction]
     pending: list[dict]
 
 
-class BankAccountData(BaseModel):
-    transactions: Transactions
+class GoCardlessBankAccountData(BaseModel):
+    transactions: GoCardlessTransactions

@@ -3,6 +3,8 @@ from datetime import date
 
 import requests
 
+from gocardless.models import GoCardlessBankAccountData
+
 BASE_URL = "https://bankaccountdata.gocardless.com/api/v2"
 
 
@@ -54,7 +56,7 @@ class GoCardLessAPI:
         account_id: uuid.UUID,
         date_from: date | None = None,
         date_to: date | None = None,
-    ) -> dict:
+    ) -> GoCardlessBankAccountData:
         response = self._requests_session.get(
             self._get_transaction_url(
                 account_id=account_id,
@@ -62,4 +64,5 @@ class GoCardLessAPI:
                 date_to=date_to,
             )
         )
-        return response.json()
+        json_data = response.json()
+        return GoCardlessBankAccountData(**json_data)
