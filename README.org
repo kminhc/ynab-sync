@@ -1,3 +1,4 @@
+* Requirements
 - Upload fresh bank transactions to YNAB
 - Supported banks: OP, Spankki
 - Should be stateless
@@ -13,3 +14,11 @@
 - Nice to have:
   - command that build authorization link (might be needed every 3 months)
   - command that provide budget_id/account_id information (list of available with name)
+
+    
+* TODOs
+- [X] MVP 
+- [ ] end-to-end testing based on results of MVP
+- [ ] refactor API classes
+- [ ] separate cli from logic
+- [ ] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
