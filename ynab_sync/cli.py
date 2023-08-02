@@ -55,8 +55,14 @@ def upload(
     transactions = []
     occurances = defaultdict(int)
     for gocardless_transaction in gocardless_transactions.transactions.booked:
-        amount = int(gocardless_transaction.transaction_amount.amount * 100)
+        amount = int(gocardless_transaction.transaction_amount.amount * 1000)
         ynab_import_key = f"YNAB:{amount}:{gocardless_transaction.booking_date}"
+
+        memo = (
+            gocardless_transaction.remittance_information_unstructured
+            or gocardless_transaction.proprietary_bank_transaction_code
+            or ""
+        )
         occurances[ynab_import_key] += 1
         transactions.append(
             YNABTransaction(
@@ -64,7 +70,7 @@ def upload(
                 date=gocardless_transaction.booking_date,
                 amount=amount,
                 payee_name=gocardless_transaction.creditor_name,
-                memo=gocardless_transaction.remittance_information_unstructured,
+                memo=memo,
                 cleared="cleared",
                 approved=False,
                 # import_id=gocardless_transaction.transaction_id,
