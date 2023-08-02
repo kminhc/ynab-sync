@@ -1,3 +1,5 @@
+import logging
+import sys
 import uuid
 from collections import defaultdict
 
@@ -11,8 +13,15 @@ from ynab.ynab import YnabAPI
 
 app = appeal.Appeal()
 
+import logging
 
-# FIXME: not really working as I imagined :(
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+
+
 @app.command()
 def upload(
     *,
@@ -25,6 +34,20 @@ def upload(
     date_from: str = "",
     date_to: str = "",
 ):
+    log = logging.getLogger("upload")
+    # TODO: Get this from appeal?
+    params = {
+        "ynab_budget_id": ynab_budget_id,
+        "ynab_account_id": ynab_account_id,
+        "gocardless_account_id": gocardless_account_id,
+    }
+    if date_from:
+        params["date_from"] = date_from
+    if date_to:
+        params["date_to"] = date_to
+
+    log.info("Started with params: %s ", params)
+
     error = False
     for name, non_optional in {
         "ynab_token": ynab_token,
@@ -84,4 +107,4 @@ def upload(
         budget_id=ynab_budget_id, json=ynab_transactions.model_dump_json()
     )
 
-    print(response)
+    log.info("YNAB response: %s", response)
