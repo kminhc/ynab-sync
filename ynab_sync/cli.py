@@ -5,11 +5,9 @@ from collections import defaultdict
 
 import appeal
 
-# from gocardless.data import op_test_data
-from gocardless.gocardless import GoCardLessAPI
-from gocardless.models import GoCardlessBankAccountData
+from gocardless.api import GoCardLessAPI
+from ynab.api import YnabAPI
 from ynab.models import YNABTransaction, YNABTransactions
-from ynab.ynab import YnabAPI
 
 app = appeal.Appeal()
 
@@ -72,8 +70,6 @@ def upload(
     gocardless_transactions = gocardless_api.get_transactions(
         account_id=gocardless_account_id, date_from=date_from, date_to=date_to
     )
-
-    # gocardless_transactions = GoCardlessBankAccountData(**op_test_data)
 
     transactions = []
     occurances = defaultdict(int)

@@ -3,10 +3,10 @@ import os
 from pprint import pprint
 
 import pytest
-from gocardless.gocardless import GoCardLessAPI
-from gocardless.models import BankAccountData
 
-from tests.data.gocardless import TRANSACTIONS as GOCARDLESS_TRANSACTIONS
+from ..gocardless.api import GoCardLessAPI
+from ..gocardless.models import GoCardlessBankAccountData
+from .data.gocardless import TRANSACTIONS as GOCARDLESS_TRANSACTIONS
 
 SECRET_ID = os.getenv("GOCARDLESS_SECRET_ID", "")
 SECRET_KEY = os.getenv("GOCARDLESS_SECRET_KEY", "")
@@ -21,6 +21,6 @@ def test_auth():
 
 
 def test_bank_account_data_model():
-    data = BankAccountData(**json.loads(GOCARDLESS_TRANSACTIONS))
+    data = GoCardlessBankAccountData(**json.loads(GOCARDLESS_TRANSACTIONS))
     print(data)
     assert False

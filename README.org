@@ -22,3 +22,6 @@
 - [ ] refactor API classes
 - [ ] separate cli from logic
 - [ ] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
+
+* Drawbacks
+- GoCardless API returns only processed date for transaction (you can buy something on Saturday but it was booked only on Monday).

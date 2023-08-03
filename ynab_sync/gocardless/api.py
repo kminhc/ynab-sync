@@ -3,7 +3,7 @@ from datetime import date
 
 import requests
 
-from gocardless.models import GoCardlessBankAccountData
+from .models import GoCardlessBankAccountData
 
 BASE_URL = "https://bankaccountdata.gocardless.com/api/v2"
 
