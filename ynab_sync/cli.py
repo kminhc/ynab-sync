@@ -98,9 +98,10 @@ def upload(
         )
 
     if not transactions:
-        log.info("No transactions returned by GoCardless")
+        log.info("No transactions reported by GoCardless, nothing to upload")
         return
 
+    log.info("%s transactions reported by GoCardless")
     ynab_transactions = YNABTransactions(transactions=transactions)
 
     response = ynab_api.post_transactions(
