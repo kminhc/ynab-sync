@@ -102,7 +102,7 @@ def upload(
         return
 
     log.info("%s transactions reported by GoCardless", len(transactions))
-    log.debug("transactions: %s", len(transactions))
+    log.debug("transactions: %s", transactions)
     ynab_transactions = YNABTransactions(transactions=transactions)
 
     response = ynab_api.post_transactions(
