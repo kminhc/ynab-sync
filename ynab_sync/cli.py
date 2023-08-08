@@ -14,7 +14,7 @@ app = appeal.Appeal()
 import logging
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
@@ -101,11 +101,12 @@ def upload(
         log.info("No transactions reported by GoCardless, nothing to upload")
         return
 
-    log.info("%s transactions reported by GoCardless")
+    log.info("%s transactions reported by GoCardless", len(transactions))
+    log.debug("transactions: %s", len(transactions))
     ynab_transactions = YNABTransactions(transactions=transactions)
 
     response = ynab_api.post_transactions(
         budget_id=ynab_budget_id, json=ynab_transactions.model_dump_json()
     )
 
-    log.info("YNAB response: %s", response)
+    log.debug("YNAB response: %s", response)
