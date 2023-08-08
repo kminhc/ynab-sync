@@ -64,5 +64,6 @@ class GoCardLessAPI:
                 date_to=date_to,
             )
         )
+        response.raise_for_status()
         json_data = response.json()
         return GoCardlessBankAccountData(**json_data)

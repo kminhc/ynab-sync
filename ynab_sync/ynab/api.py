@@ -40,5 +40,6 @@ class YnabAPI:
             data=json,
             headers={"content-type": "application/json"},
         )
+        response.raise_for_status()
 
         return response.json()

@@ -4,6 +4,7 @@ import uuid
 from collections import defaultdict
 
 import appeal
+from requests import HTTPError
 
 from gocardless.api import GoCardLessAPI
 from ynab.api import YnabAPI
@@ -62,14 +63,17 @@ def upload(
     if error:
         return
 
-    gocardless_api = GoCardLessAPI(
-        secret_id=gocardless_secret_id, secret_key=gocardless_secret_key
-    )
-    ynab_api = YnabAPI(access_token=ynab_token)
+    try:
+        gocardless_api = GoCardLessAPI(
+            secret_id=gocardless_secret_id, secret_key=gocardless_secret_key
+        )
 
-    gocardless_transactions = gocardless_api.get_transactions(
-        account_id=gocardless_account_id, date_from=date_from, date_to=date_to
-    )
+        gocardless_transactions = gocardless_api.get_transactions(
+            account_id=gocardless_account_id, date_from=date_from, date_to=date_to
+        )
+    except HTTPError as exc:
+        log.exception("GoCardless returned HTTPError", exc_info=exc)
+        return
 
     transactions = []
     occurances = defaultdict(int)
@@ -105,8 +109,14 @@ def upload(
     log.debug("transactions: %s", transactions)
     ynab_transactions = YNABTransactions(transactions=transactions)
 
-    response = ynab_api.post_transactions(
-        budget_id=ynab_budget_id, json=ynab_transactions.model_dump_json()
-    )
+    ynab_api = YnabAPI(access_token=ynab_token)
+
+    try:
+        response = ynab_api.post_transactions(
+            budget_id=ynab_budget_id, json=ynab_transactions.model_dump_json()
+        )
+    except HTTPError as exc:
+        log.exception("YNAB returned HTTPError", exc_info=exc)
+        return
 
     log.debug("YNAB response: %s", response)
