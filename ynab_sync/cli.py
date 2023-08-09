@@ -92,7 +92,9 @@ def upload(
                 account_id=ynab_account_id,
                 date=gocardless_transaction.booking_date,
                 amount=amount,
-                payee_name=gocardless_transaction.creditor_name or "",
+                payee_name=gocardless_transaction.creditor_name
+                or gocardless_transaction.debtor_name
+                or "",
                 memo=memo,
                 cleared="cleared",
                 approved=False,
