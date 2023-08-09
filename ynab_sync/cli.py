@@ -110,13 +110,18 @@ def upload(
     ynab_transactions = YNABTransactions(transactions=transactions)
 
     ynab_api = YnabAPI(access_token=ynab_token)
+    transactions_json = ynab_transactions.model_dump_json()
 
     try:
         response = ynab_api.post_transactions(
-            budget_id=ynab_budget_id, json=ynab_transactions.model_dump_json()
+            budget_id=ynab_budget_id, json=transactions_json
         )
     except HTTPError as exc:
-        log.exception("YNAB returned HTTPError", exc_info=exc)
+        log.exception(
+            "YNAB returned HTTPError: payload: %s",
+            transactions_json,
+            exc_info=exc,
+        )
         return
 
     log.debug("YNAB response: %s", response)
