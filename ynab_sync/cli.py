@@ -116,7 +116,7 @@ def upload(
 
     try:
         response = ynab_api.post_transactions(
-            budget_id=ynab_budget_id, json=transactions_json
+            budget_id=ynab_budget_id, json_data=transactions_json
         )
     except HTTPError as exc:
         log.exception(

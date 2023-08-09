@@ -1,3 +1,4 @@
+import json
 import uuid
 
 import requests
@@ -31,14 +32,13 @@ class YnabAPI:
     def post_transactions(
         self,
         budget_id: uuid.UUID,
-        json: str,
+        json_data: str,
     ) -> dict:
         response = self._requests_session.post(
             self._get_transaction_url(
                 budget_id=budget_id,
             ),
-            data=json,
-            headers={"content-type": "application/json"},
+            json=json.loads(json_data),
         )
         response.raise_for_status()
 
