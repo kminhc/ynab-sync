@@ -1,4 +1,67 @@
-* Requirements
+You Need a Budget (https://www.ynab.com/) does not have integrations with many Europe banks (e.g. Finland OP or SPankki) but there is atleast one free API that can grab data from them: GoCardless (https://gocardless.com/ formerly Nordigen).
+
+This tool allows you to sync between your bank account (if it is supported by GoCardless) and upload transactions to YNAB on regular basis (e.g. crontab job could suffice). This is much better than converting CSVs from banks and upload it manually to YNAB on weekly basis.
+
+Personally I started to use that in July 2023 for my main budget with OP and SPankki banks and not facing any issues anymore with it (have a separate cron job for each bank account that runs ~upload~ command 5 times per day).
+
+* Before you start, disclaimer:
+This tool is still in MVP state: developed poorly and fastest way possible. Alpha version I would say.
+
+So these are things that may irritate you: 
+- Too hard to start for a non-developer (getting all thise IDs is still manual)
+- No proper packaging: docker is probably fine but has no way change date range properly (only by editing Dockerfile instead)
+- poor error handling (there are a lot of cases when you *will* encounter hard to understand errors because of a random bug, unexpected API response, etc..)
+
+* Usage (Not that friendly yet, sorry!)
+
+Currently in order to use the tool you need atleast Python version 3.11 and obtain these unique strings:
+- Secret ID and Secret Key from your GoCardless account (you can create one free of charge)
+- Account ID from GoCardless API connected to your bank account (listed in Step 5 in [[https://developer.gocardless.com/bank-account-data/quick-start-guide][Quick Start Guide]] at GoCardless docs)
+- YNAB access token (you can grab it from https://app.ynab.com/settings/developer)
+- YNAB Budget and Account IDs where you want to import data: https://api.ynab.com/v1#/Budgets/getBudgets and https://api.ynab.com/v1#/Accounts/getAccounts call could help with that (consult https://api.ynab.com/ if needed)
+
+
+After getting all what is needed and installing requirements (~pip install -r requirements.txt~) you can use ~upload~
+command in order to download transactions from GoCardless Account and upload them to YNAB budget/account:
+
+#+begin_src sh
+python ynab_sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
+#+end_src
+  
+** Docker usage
+Probably fastest way to use it in any environment is to use docker container (that is how I currently use it for myself).
+
+- clone this repository
+#+begin_src sh
+git clone https://github.com/axeoman/ynab-sync.git
+#+end_src
+- Store you credentials in ~.env~ file e.g. ~sandbox.env~ ([[https://github.com/axeoman/ynab-sync/blob/main/bank.example.env][example]]) and run following commands
+- Build docker container
+#+begin_src
+docker build -t ynab-sync .
+#+end_src
+
+- Run docker container. Note: it will grab all transaction from 7 days before current date (consult [[https://github.com/axeoman/ynab-sync/blob/main/Dockerfile][Dockerfile]] for details)
+  
+#+begin_src sh
+docker run --env-file=sandbox.env --rm ynab-sync
+#+end_src
+
+* Development
+I have an e2e happy path test: feel free to submit a PR :)
+
+** API Used
+- GoCardless (Nordigen) API: https://developer.gocardless.com/bank-account-data/endpoints
+- YNAB API: https://api.ynab.com/v1#/
+
+** TODOs
+- [X] MVP 
+- [X] end-to-end automated tests based on results of MVP
+- [ ] refactor API classes
+- [ ] separate cli from logic
+- [ ] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
+
+** Initial requirements
 - Upload fresh bank transactions to YNAB
 - Supported banks: OP, Spankki
 - Should be stateless
@@ -16,12 +79,3 @@
   - command that provide budget_id/account_id information (list of available with name)
 
     
-* TODOs
-- [X] MVP 
-- [ ] end-to-end testing based on results of MVP
-- [ ] refactor API classes
-- [ ] separate cli from logic
-- [ ] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
-
-* Drawbacks
-- GoCardless API returns only processed date for transaction (you can buy something on Saturday but it was booked only on Monday).
