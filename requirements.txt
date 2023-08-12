@@ -1,5 +1,3 @@
 appeal
 pydantic
 requests
-pytest
-responses
