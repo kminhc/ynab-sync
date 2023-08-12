@@ -113,7 +113,6 @@ def upload(
 
     ynab_api = YnabAPI(access_token=ynab_token)
     transactions_json = ynab_transactions.model_dump_json()
-    print("TESTDATA", transactions_json)
 
     try:
         response = ynab_api.post_transactions(
