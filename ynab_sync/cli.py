@@ -6,9 +6,9 @@ from collections import defaultdict
 import appeal
 from requests import HTTPError
 
-from gocardless.api import GoCardLessAPI
-from ynab.api import YnabAPI
-from ynab.models import YNABTransaction, YNABTransactions
+from .gocardless.api import GoCardLessAPI
+from .ynab.api import YnabAPI
+from .ynab.models import YNABTransaction, YNABTransactions
 
 app = appeal.Appeal()
 
@@ -113,6 +113,7 @@ def upload(
 
     ynab_api = YnabAPI(access_token=ynab_token)
     transactions_json = ynab_transactions.model_dump_json()
+    print("TESTDATA", transactions_json)
 
     try:
         response = ynab_api.post_transactions(

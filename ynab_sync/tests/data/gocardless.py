@@ -1,10 +1,36 @@
-TRANSACTIONS = """{
+TEST_GOCARDLESS_TRANSACTIONS = """{
   "transactions": {
     "booked": [
+    {
+        "transactionId": "202308015931560N0164",
+        "bookingDate": "2023-08-01",
+        "valueDate": "2023-08-01",
+        "transactionAmount": {
+          "amount": "400.00",
+          "currency": "EUR"
+        },
+        "debtorName": "XXXX XXXXX",
+        "remittanceInformationUnstructured": "Withdrawal from savings target Vero\\nhailinto",
+        "proprietaryBankTransactionCode": "PANO",
+        "internalTransactionId": "8487f5c2f06e427b988beac249620aaa"
+      },
       {
-        "transactionId": "2023072901953108-1",
-        "bookingDate": "2023-07-29",
-        "valueDate": "2023-07-29",
+        "transactionId": "202308015EQEO1540754",
+        "bookingDate": "2023-08-01",
+        "valueDate": "2023-08-01",
+        "transactionAmount": {
+          "amount": "-25.47",
+          "currency": "EUR"
+        },
+        "creditorName": "LIDL HELSINKI HELSINKI",
+        "remittanceInformationUnstructured": "OSTOPVM  230731\\nMF NRO 74500000000000000000336     \\nVARMENTAJA 400",
+        "proprietaryBankTransactionCode": "PKORTTIMAKSU",
+        "internalTransactionId": "738bddf4cebd9667e2a2ce16a5c4a2aa"
+      },
+      {
+        "transactionId": "2023081101953108-1",
+        "bookingDate": "2023-08-03",
+        "valueDate": "2023-08-03",
         "transactionAmount": {
           "amount": "-15.00",
           "currency": "EUR"
@@ -13,9 +39,9 @@ TRANSACTIONS = """{
         "bankTransactionCode": "PMNT"
       },
       {
-        "transactionId": "2023072901953107-1",
-        "bookingDate": "2023-07-29",
-        "valueDate": "2023-07-29",
+        "transactionId": "2023081101953104-1",
+        "bookingDate": "2023-08-03",
+        "valueDate": "2023-08-03",
         "transactionAmount": {
           "amount": "45.00",
           "currency": "EUR"
@@ -28,9 +54,9 @@ TRANSACTIONS = """{
         "bankTransactionCode": "PMNT"
       },
       {
-        "transactionId": "2023072901953105-1",
-        "bookingDate": "2023-07-29",
-        "valueDate": "2023-07-29",
+        "transactionId": "2023081101953102-1",
+        "bookingDate": "2023-08-03",
+        "valueDate": "2023-08-03",
         "transactionAmount": {
           "amount": "-15.00",
           "currency": "EUR"
@@ -39,9 +65,9 @@ TRANSACTIONS = """{
         "bankTransactionCode": "PMNT"
       },
       {
-        "transactionId": "2023072901953104-1",
-        "bookingDate": "2023-07-29",
-        "valueDate": "2023-07-29",
+        "transactionId": "2023081101953107-1",
+        "bookingDate": "2023-08-04",
+        "valueDate": "2023-08-04",
         "transactionAmount": {
           "amount": "45.00",
           "currency": "EUR"
@@ -54,9 +80,9 @@ TRANSACTIONS = """{
         "bankTransactionCode": "PMNT"
       },
       {
-        "transactionId": "2023072901953102-1",
-        "bookingDate": "2023-07-29",
-        "valueDate": "2023-07-29",
+        "transactionId": "2023081101953105-1",
+        "bookingDate": "2023-08-11",
+        "valueDate": "2023-08-11",
         "transactionAmount": {
           "amount": "-15.00",
           "currency": "EUR"
@@ -65,9 +91,9 @@ TRANSACTIONS = """{
         "bankTransactionCode": "PMNT"
       },
       {
-        "transactionId": "2023072901953101-1",
-        "bookingDate": "2023-07-29",
-        "valueDate": "2023-07-29",
+        "transactionId": "2023081101953101-1",
+        "bookingDate": "2023-08-11",
+        "valueDate": "2023-08-11",
         "transactionAmount": {
           "amount": "45.00",
           "currency": "EUR"
@@ -82,7 +108,7 @@ TRANSACTIONS = """{
     ],
     "pending": [
       {
-        "valueDate": "2023-07-28",
+        "valueDate": "2023-08-10",
         "transactionAmount": {
           "amount": "10.00",
           "currency": "EUR"
@@ -92,5 +118,3 @@ TRANSACTIONS = """{
     ]
   }
 }"""
-
-
