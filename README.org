@@ -31,7 +31,7 @@ python -m ynab_sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGE
 ** Docker usage
 Probably fastest way to use it in any environment is to use docker container (that is how I currently use it for myself).
 
-- clone this repository
+- clone this repository (or grab latest release if it's broken)
 #+begin_src sh
 git clone https://github.com/axeoman/ynab-sync.git
 #+end_src
