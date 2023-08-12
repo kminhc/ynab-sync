@@ -25,7 +25,7 @@ After getting all what is needed and installing requirements (~pip install -r re
 command in order to download transactions from GoCardless Account and upload them to YNAB budget/account:
 
 #+begin_src sh
-python ynab_sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
+python -m ynab_sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
 #+end_src
   
 ** Docker usage
