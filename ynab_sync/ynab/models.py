@@ -1,10 +1,11 @@
 from datetime import date
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 
 class YNABTransaction(BaseModel):
-    account_id: str
+    account_id: UUID
     date: date
     amount: int
     payee_name: str | None = Field(default="")

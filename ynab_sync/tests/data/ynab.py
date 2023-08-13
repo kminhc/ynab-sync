@@ -1,7 +1,7 @@
 TEST_YNAB_REQUEST_TRANSACTIONS = """{
   "transactions": [
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-01",
       "amount": 400000,
       "payee_name": "XXXX XXXXX",
@@ -11,7 +11,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:400000:2023-08-01:1"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-01",
       "amount": -25470,
       "payee_name": "LIDL HELSINKI HELSINKI",
@@ -21,7 +21,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:-25470:2023-08-01:1"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-03",
       "amount": -15000,
       "payee_name": "",
@@ -31,7 +31,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:-15000:2023-08-03:1"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-03",
       "amount": 45000,
       "payee_name": "MON MOTHMA",
@@ -41,7 +41,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:45000:2023-08-03:1"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-03",
       "amount": -15000,
       "payee_name": "",
@@ -51,7 +51,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:-15000:2023-08-03:2"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-04",
       "amount": 45000,
       "payee_name": "MON MOTHMA",
@@ -61,7 +61,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:45000:2023-08-04:1"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-11",
       "amount": -15000,
       "payee_name": "",
@@ -71,7 +71,7 @@ TEST_YNAB_REQUEST_TRANSACTIONS = """{
       "import_id": "YNAB:-15000:2023-08-11:1"
     },
     {
-      "account_id": "TEST_GOCARDLESS_ACCOUNT_ID",
+      "account_id": "93ec6d1f-7d75-48de-85b4-d9caec4807c8",
       "date": "2023-08-11",
       "amount": 45000,
       "payee_name": "MON MOTHMA",

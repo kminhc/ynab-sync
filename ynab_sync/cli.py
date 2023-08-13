@@ -1,14 +1,10 @@
 import logging
+import os
 import sys
-import uuid
-from collections import defaultdict
+from datetime import date
+from uuid import UUID
 
 import appeal
-from requests import HTTPError
-
-from .gocardless.api import GoCardLessAPI
-from .ynab.api import YnabAPI
-from .ynab.models import YNABTransaction, YNABTransactions
 
 app = appeal.Appeal()
 
@@ -16,9 +12,12 @@ import logging
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] %(message)s",
+    format="%(asctime)s %(name)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
+
+from .logic import (get_gocardless_transactions, prepare_ynab_transactions,
+                    upload_to_ynab)
 
 
 @app.command()
@@ -33,7 +32,7 @@ def upload(
     date_from: str = "",
     date_to: str = "",
 ):
-    log = logging.getLogger("upload")
+    log = logging.getLogger("cli.upload")
     # TODO: Get this from appeal?
     params = {
         "ynab_budget_id": ynab_budget_id,
@@ -63,67 +62,19 @@ def upload(
     if error:
         return
 
-    try:
-        gocardless_api = GoCardLessAPI(
-            secret_id=gocardless_secret_id, secret_key=gocardless_secret_key
-        )
+    gocardless_bank_account_data = get_gocardless_transactions(
+        secret_key=gocardless_secret_key,
+        secret_id=gocardless_secret_id,
+        account_id=UUID(gocardless_account_id),
+        date_from=date.fromisoformat(date_from) if date_from else None,
+        date_to=date.fromisoformat(date_to) if date_to else None,
+    )
 
-        gocardless_transactions = gocardless_api.get_transactions(
-            account_id=gocardless_account_id, date_from=date_from, date_to=date_to
-        )
-    except HTTPError as exc:
-        log.exception("GoCardless returned HTTPError", exc_info=exc)
-        return
+    ynab_transactions = prepare_ynab_transactions(
+        gocardless_bank_data=gocardless_bank_account_data,
+        ynab_account_id=UUID(ynab_account_id),
+    )
 
-    transactions = []
-    occurances = defaultdict(int)
-    for gocardless_transaction in gocardless_transactions.transactions.booked:
-        amount = int(gocardless_transaction.transaction_amount.amount * 1000)
-        ynab_import_key = f"YNAB:{amount}:{gocardless_transaction.booking_date}"
-
-        memo = (
-            gocardless_transaction.remittance_information_unstructured
-            or gocardless_transaction.proprietary_bank_transaction_code
-            or ""
-        )
-        occurances[ynab_import_key] += 1
-        transactions.append(
-            YNABTransaction(
-                account_id=ynab_account_id,
-                date=gocardless_transaction.booking_date,
-                amount=amount,
-                payee_name=gocardless_transaction.creditor_name
-                or gocardless_transaction.debtor_name
-                or "",
-                memo=memo,
-                cleared="cleared",
-                approved=False,
-                # import_id=gocardless_transaction.transaction_id,
-                import_id=f"{ynab_import_key}:{occurances[ynab_import_key]}",
-            )
-        )
-
-    if not transactions:
-        log.info("No transactions reported by GoCardless, nothing to upload")
-        return
-
-    log.info("%s transactions reported by GoCardless", len(transactions))
-    log.debug("transactions: %s", transactions)
-    ynab_transactions = YNABTransactions(transactions=transactions)
-
-    ynab_api = YnabAPI(access_token=ynab_token)
-    transactions_json = ynab_transactions.model_dump_json()
-
-    try:
-        response = ynab_api.post_transactions(
-            budget_id=ynab_budget_id, json_data=transactions_json
-        )
-    except HTTPError as exc:
-        log.exception(
-            "YNAB returned HTTPError: payload: %s",
-            transactions_json,
-            exc_info=exc,
-        )
-        return
-
-    log.debug("YNAB response: %s", response)
+    upload_to_ynab(
+        transactions=ynab_transactions, token=ynab_token, budget_id=UUID(ynab_budget_id)
+    )

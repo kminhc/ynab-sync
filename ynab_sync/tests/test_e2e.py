@@ -1,5 +1,6 @@
 import json
 from http import HTTPStatus
+from uuid import uuid4
 
 import pytest
 import responses
@@ -12,11 +13,11 @@ from ..tests.data.ynab import (TEST_YNAB_REQUEST_TRANSACTIONS,
 from ..ynab.api import BASE_URL as YNAB_BASE_URL
 
 TEST_YNAB_TOKEN = "TEST_YNAB_TOKEN"
-TEST_YNAB_BUDGET_ID = "TEST_YNAB_BUDGET_ID"
-TEST_YNAB_ACCOUNT_ID = "TEST_YNAB_ACCOUNT_ID"
+TEST_YNAB_BUDGET_ID = "49c714fa-fa82-4e11-b145-1e1d87a61c1f"
+TEST_YNAB_ACCOUNT_ID = "93ec6d1f-7d75-48de-85b4-d9caec4807c8"
 TEST_GOCARDLESS_SECRET_ID = "TEST_GOCARDLESS_SECRET_ID"
 TEST_GOCARDLESS_SECRET_KEY = "TEST_GOCARDLESS_SECRET_KEY"
-TEST_GOCARDLESS_ACCOUNT_ID = "TEST_GOCARDLESS_ACCOUNT_ID"
+TEST_GOCARDLESS_ACCOUNT_ID = "dcefb08b-bb77-4a16-ab9f-e8f509de8ec6"
 TEST_GOCARDLESS_ACCESS_TOKEN = "TEST_GOCARDLESS_ACCESS_TOKEN"
 TEST_GOCARDLESS_REFRESH_TOKEN = "TEST_GOCARDLESS_REFRESH_TOKEN"
 
@@ -83,7 +84,7 @@ def test_upload_e2e(date_from: str, date_to: str):
     upload(
         ynab_token=TEST_YNAB_TOKEN,
         ynab_budget_id=TEST_YNAB_BUDGET_ID,
-        ynab_account_id=TEST_GOCARDLESS_ACCOUNT_ID,
+        ynab_account_id=TEST_YNAB_ACCOUNT_ID,
         gocardless_secret_id=TEST_GOCARDLESS_SECRET_ID,
         gocardless_account_id=TEST_GOCARDLESS_ACCOUNT_ID,
         gocardless_secret_key=TEST_GOCARDLESS_SECRET_KEY,
