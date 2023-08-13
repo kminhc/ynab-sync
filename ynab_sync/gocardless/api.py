@@ -3,7 +3,8 @@ from datetime import date
 
 import requests
 
-from .models import GoCardlessBankAccountData, GoCardlessInstitution
+from .models import (GoCardlessBankAccountData, GoCardlessInstitution,
+                     GoCardlessRequisition)
 
 BASE_URL = "https://bankaccountdata.gocardless.com/api/v2"
 
@@ -75,3 +76,20 @@ class GoCardLessAPI:
         response.raise_for_status()
         json_data = response.json()
         return [GoCardlessInstitution(**institution) for institution in json_data]
+
+    def get_requisition(self, requisition_id: str) -> GoCardlessRequisition:
+        response = self._requests_session.get(
+            f"{BASE_URL}/requisitions/{requisition_id}",
+        )
+        response.raise_for_status()
+        return GoCardlessRequisition(**response.json())
+
+    def post_requisition(
+        self, redirect: str, institution_id: str
+    ) -> GoCardlessRequisition:
+        response = self._requests_session.post(
+            f"{BASE_URL}/requisitions/",
+            json={"redirect": redirect, "institution_id": institution_id},
+        )
+        response.raise_for_status()
+        return GoCardlessRequisition(**response.json())

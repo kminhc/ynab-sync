@@ -18,7 +18,8 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
-from .logic import (get_gocardless_banks, get_gocardless_transactions,
+from .logic import (create_gocardless_requisition, get_gocardless_banks,
+                    get_gocardless_requisition, get_gocardless_transactions,
                     get_ynab_budget, get_ynab_budgets,
                     prepare_ynab_transactions, upload_to_ynab)
 
@@ -144,4 +145,48 @@ def banks(
     )
     table = tabulate([(bank.id, bank.name) for bank in banks], headers=["ID", "NAME"])
 
+    print(table)
+
+
+@app.command("gocardless").command()
+def generate_bank_auth_link(
+    institution_id: str,
+    *,
+    gocardless_secret_id: str = "",
+    gocardless_secret_key: str = "",
+):
+    requisition = create_gocardless_requisition(
+        secret_id=gocardless_secret_id,
+        secret_key=gocardless_secret_key,
+        redirect="",
+        institution_id=institution_id,
+    )
+
+    print("GOCARDLESS_REQUISITION_ID: ", requisition.id)
+    print(
+        "Open this link in your browser and proceed with authorization:",
+        requisition.link,
+    )
+    print(
+        "Run `gocardless list_requisition_accounts` afterwards to get GOCARDLESS_ACCOUNT_ID"
+    )
+
+
+@app.command("gocardless").command()
+def list_requisition_accounts(
+    requisition_id: str,
+    *,
+    gocardless_secret_id: str = "",
+    gocardless_secret_key: str = "",
+):
+    requisition = get_gocardless_requisition(
+        secret_id=gocardless_secret_id,
+        secret_key=gocardless_secret_key,
+        requisition_id=requisition_id,
+    )
+
+    table = tabulate(
+        [(requisition.id, account) for account in requisition.accounts],
+        headers=["GOCARDLESS_REQUISITION_ID", "GOCARDLESS_ACCOUNT_ID"],
+    )
     print(table)

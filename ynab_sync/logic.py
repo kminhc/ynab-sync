@@ -5,7 +5,8 @@ from uuid import UUID
 
 from requests import HTTPError
 
-from ynab_sync.gocardless.models import GoCardlessBankAccountData
+from ynab_sync.gocardless.models import (GoCardlessBankAccountData,
+                                         GoCardlessRequisition)
 
 from .gocardless.api import GoCardLessAPI
 from .ynab.api import YnabAPI
@@ -112,3 +113,22 @@ def get_ynab_budget(token: str, budget_id: UUID) -> YNABBudget:
 def get_gocardless_banks(secret_id: str, secret_key: str, country: str):
     gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
     return gocardless_api.get_banks(country=country)
+
+
+def create_gocardless_requisition(
+    secret_id: str,
+    secret_key: str,
+    institution_id: str,
+    redirect: str,
+) -> GoCardlessRequisition:
+    gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
+    return gocardless_api.post_requisition(
+        redirect=redirect, institution_id=institution_id
+    )
+
+
+def get_gocardless_requisition(
+    secret_id: str, secret_key: str, requisition_id: str
+) -> GoCardlessRequisition:
+    gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
+    return gocardless_api.get_requisition(requisition_id=requisition_id)

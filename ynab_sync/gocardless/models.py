@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 
 from pydantic import BaseModel, Field
@@ -38,3 +38,13 @@ class GoCardlessBankAccountData(BaseModel):
 class GoCardlessInstitution(BaseModel):
     id: str
     name: str
+
+
+class GoCardlessRequisition(BaseModel):
+    id: str
+    created: datetime
+    redirect: str
+    status: str
+    institution_id: str
+    link: str
+    accounts: list[str] = Field(default_factory=list)
