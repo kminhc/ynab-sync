@@ -3,7 +3,7 @@ from datetime import date
 
 import requests
 
-from .models import GoCardlessBankAccountData
+from .models import GoCardlessBankAccountData, GoCardlessInstitution
 
 BASE_URL = "https://bankaccountdata.gocardless.com/api/v2"
 
@@ -67,3 +67,11 @@ class GoCardLessAPI:
         response.raise_for_status()
         json_data = response.json()
         return GoCardlessBankAccountData(**json_data)
+
+    def get_banks(self, country: str) -> list[GoCardlessInstitution]:
+        response = self._requests_session.get(
+            f"{BASE_URL}/institutions/?country={country}"
+        )
+        response.raise_for_status()
+        json_data = response.json()
+        return [GoCardlessInstitution(**institution) for institution in json_data]

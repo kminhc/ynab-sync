@@ -33,3 +33,8 @@ class GoCardlessTransactions(BaseModel):
 
 class GoCardlessBankAccountData(BaseModel):
     transactions: GoCardlessTransactions
+
+
+class GoCardlessInstitution(BaseModel):
+    id: str
+    name: str

@@ -107,3 +107,8 @@ def get_ynab_budgets(token: str) -> list[YNABBudget]:
 def get_ynab_budget(token: str, budget_id: UUID) -> YNABBudget:
     ynab_api = YnabAPI(access_token=token)
     return ynab_api.get_budget(budget_id=budget_id)
+
+
+def get_gocardless_banks(secret_id: str, secret_key: str, country: str):
+    gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
+    return gocardless_api.get_banks(country=country)

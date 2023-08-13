@@ -18,9 +18,9 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
-from .logic import (get_gocardless_transactions, get_ynab_budget,
-                    get_ynab_budgets, prepare_ynab_transactions,
-                    upload_to_ynab)
+from .logic import (get_gocardless_banks, get_gocardless_transactions,
+                    get_ynab_budget, get_ynab_budgets,
+                    prepare_ynab_transactions, upload_to_ynab)
 
 
 @app.command()
@@ -85,7 +85,7 @@ def upload(
 
 @app.command()
 def ynab():
-    pass
+    ...
 
 
 @app.command("ynab").command()
@@ -122,4 +122,26 @@ def accounts(*, ynab_token: str = "", ynab_budget_id: str = ""):
         headers=["ID", "NAME", "TYPE", "BALANCE", "CLOSED", "DELETED"],
         tablefmt="github",
     )
+    print(table)
+
+
+@app.command()
+def gocardless():
+    ...
+
+
+@app.command("gocardless").command()
+def banks(
+    country: str,
+    *,
+    gocardless_secret_id: str = "",
+    gocardless_secret_key: str = "",
+):
+    banks = get_gocardless_banks(
+        secret_id=gocardless_secret_id,
+        secret_key=gocardless_secret_key,
+        country=country,
+    )
+    table = tabulate([(bank.id, bank.name) for bank in banks], headers=["ID", "NAME"])
+
     print(table)
