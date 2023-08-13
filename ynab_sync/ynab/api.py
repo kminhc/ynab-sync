@@ -2,6 +2,7 @@ import json
 import uuid
 
 import requests
+from ynab_sync.ynab.models import YNABAccount, YNABBudget
 
 BASE_URL = "https://api.ynab.com/v1"
 
@@ -43,3 +44,13 @@ class YnabAPI:
         response.raise_for_status()
 
         return response.json()
+
+    def get_budget(self, budget_id: uuid.UUID) -> YNABBudget:
+        response = self._requests_session.get(f"{BASE_URL}/budgets/{budget_id}")
+        response.raise_for_status()
+        return YNABBudget(**response.json()["data"]["budget"])
+
+    def get_budgets(self) -> list[YNABBudget]:
+        response = self._requests_session.get(f"{BASE_URL}/budgets")
+        response.raise_for_status()
+        return [YNABBudget(**budget) for budget in response.json()["data"]["budgets"]]

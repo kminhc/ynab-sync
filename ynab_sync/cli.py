@@ -1,3 +1,4 @@
+import decimal
 import logging
 import os
 import sys
@@ -5,18 +6,20 @@ from datetime import date
 from uuid import UUID
 
 import appeal
+from tabulate import tabulate
 
 app = appeal.Appeal()
 
 import logging
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s %(name)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
-from .logic import (get_gocardless_transactions, prepare_ynab_transactions,
+from .logic import (get_gocardless_transactions, get_ynab_budget,
+                    get_ynab_budgets, prepare_ynab_transactions,
                     upload_to_ynab)
 
 
@@ -78,3 +81,45 @@ def upload(
     upload_to_ynab(
         transactions=ynab_transactions, token=ynab_token, budget_id=UUID(ynab_budget_id)
     )
+
+
+@app.command()
+def ynab():
+    pass
+
+
+@app.command("ynab").command()
+def budgets(
+    *,
+    ynab_token: str = "",
+):
+    budgets = get_ynab_budgets(token=ynab_token)
+
+    table = tabulate(
+        [(budget.id, budget.name, budget.currency) for budget in budgets],
+        headers=["ID", "NAME", "CURRENCY"],
+        tablefmt="github",
+    )
+    print(table)
+
+
+@app.command("ynab").command()
+def accounts(*, ynab_token: str = "", ynab_budget_id: str = ""):
+    budget = get_ynab_budget(token=ynab_token, budget_id=UUID(ynab_budget_id))
+
+    table = tabulate(
+        [
+            (
+                account.id,
+                account.name,
+                account.type,
+                f"{budget.currency_symbol}{account.balance / decimal.Decimal(1000)}",
+                account.closed,
+                account.deleted,
+            )
+            for account in budget.accounts
+        ],
+        headers=["ID", "NAME", "TYPE", "BALANCE", "CLOSED", "DELETED"],
+        tablefmt="github",
+    )
+    print(table)

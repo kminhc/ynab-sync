@@ -9,7 +9,8 @@ from ynab_sync.gocardless.models import GoCardlessBankAccountData
 
 from .gocardless.api import GoCardLessAPI
 from .ynab.api import YnabAPI
-from .ynab.models import YNABTransaction, YNABTransactions
+from .ynab.models import (YNABAccount, YNABBudget, YNABTransaction,
+                          YNABTransactions)
 
 
 def get_gocardless_transactions(
@@ -96,3 +97,13 @@ def upload_to_ynab(
         raise
 
     log.debug("YNAB response: %s", response)
+
+
+def get_ynab_budgets(token: str) -> list[YNABBudget]:
+    ynab_api = YnabAPI(access_token=token)
+    return ynab_api.get_budgets()
+
+
+def get_ynab_budget(token: str, budget_id: UUID) -> YNABBudget:
+    ynab_api = YnabAPI(access_token=token)
+    return ynab_api.get_budget(budget_id=budget_id)

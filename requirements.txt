@@ -1,3 +1,4 @@
 appeal
 pydantic
 requests
+tabulate
