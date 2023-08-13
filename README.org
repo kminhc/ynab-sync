@@ -47,6 +47,14 @@ docker build -t ynab-sync .
 docker run --env-file=sandbox.env --rm ynab-sync
 #+end_src
 
+** Getting budget and account ids
+There are three commands that can help you with getting nessesary identifiers (probably buggy, but still)
+- ~gocardless banks~ - list of banks that needed for next step (auth)
+- ~gocardless generate_bank_auth_link~ - creates http link in order to auth with your bank 
+- ~gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is nessesary for ~upload~ command
+- ~ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
+- ~ynab accounts~ - lists accoutns in your YNAB budget (YNAB_ACCOUNT_ID)
+
 * Development
 I have an e2e happy path test: feel free to submit a PR :)
 
@@ -57,9 +65,11 @@ I have an e2e happy path test: feel free to submit a PR :)
 ** TODOs
 - [X] MVP 
 - [X] end-to-end automated tests based on results of MVP
+- [X] separate cli from logic
 - [ ] refactor API classes
-- [ ] separate cli from logic
-- [ ] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
+- [X] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
+- [ ] add packaging
+- [ ] add simple interactive command that provides you with .env file and all nessesary variables to get bank data
 
 ** Initial requirements
 - Upload fresh bank transactions to YNAB
