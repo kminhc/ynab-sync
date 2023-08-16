@@ -8,6 +8,15 @@ from uuid import UUID
 import appeal
 from tabulate import tabulate
 
+from ynab_sync.constants import (
+    ENV_GOCARDLESS_ACCOUNT_ID,
+    ENV_GOCARDLESS_SECRET_ID,
+    ENV_GOCARDLESS_SECRET_KEY,
+    ENV_YNAB_ACCOUNT_ID,
+    ENV_YNAB_BUDGET_ID,
+    ENV_YNAB_TOKEN,
+)
+
 app = appeal.Appeal()
 
 import logging
@@ -18,23 +27,29 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
-from .logic import (create_gocardless_requisition, get_gocardless_banks,
-                    get_gocardless_requisition, get_gocardless_transactions,
-                    get_ynab_budget, get_ynab_budgets,
-                    prepare_ynab_transactions, upload_to_ynab)
+from .logic import (
+    create_gocardless_requisition,
+    get_gocardless_banks,
+    get_gocardless_requisition,
+    get_gocardless_transactions,
+    get_ynab_budget,
+    get_ynab_budgets,
+    prepare_ynab_transactions,
+    upload_to_ynab,
+)
 
 
 @app.command()
 def upload(
     *,
-    ynab_token: str = "",
-    ynab_budget_id: str = "",
-    ynab_account_id: str = "",
-    gocardless_secret_id: str = "",
-    gocardless_secret_key: str = "",
-    gocardless_account_id: str = "",
     date_from: str = "",
     date_to: str = "",
+    ynab_token: str = os.getenv(ENV_YNAB_TOKEN, ""),
+    ynab_budget_id: str = os.getenv(ENV_YNAB_BUDGET_ID, ""),
+    ynab_account_id: str = os.getenv(ENV_YNAB_ACCOUNT_ID, ""),
+    gocardless_secret_id: str = os.getenv(ENV_GOCARDLESS_SECRET_ID, ""),
+    gocardless_secret_key: str = os.getenv(ENV_GOCARDLESS_SECRET_KEY, ""),
+    gocardless_account_id: str = os.getenv(ENV_GOCARDLESS_ACCOUNT_ID, ""),
 ):
     log = logging.getLogger("cli.upload")
     # TODO: Get this from appeal?
@@ -92,7 +107,7 @@ def ynab():
 @app.command("ynab").command()
 def budgets(
     *,
-    ynab_token: str = "",
+    ynab_token: str = os.getenv(ENV_YNAB_TOKEN),
 ):
     budgets = get_ynab_budgets(token=ynab_token)
 
@@ -105,7 +120,11 @@ def budgets(
 
 
 @app.command("ynab").command()
-def accounts(*, ynab_token: str = "", ynab_budget_id: str = ""):
+def accounts(
+    *,
+    ynab_token: str = os.getenv(ENV_YNAB_TOKEN),
+    ynab_budget_id: str = os.getenv(ENV_YNAB_BUDGET_ID),
+):
     budget = get_ynab_budget(token=ynab_token, budget_id=UUID(ynab_budget_id))
 
     table = tabulate(
@@ -135,8 +154,8 @@ def gocardless():
 def banks(
     country: str,
     *,
-    gocardless_secret_id: str = "",
-    gocardless_secret_key: str = "",
+    gocardless_secret_id: str = os.getenv(ENV_GOCARDLESS_SECRET_ID, ""),
+    gocardless_secret_key: str = os.getenv(ENV_GOCARDLESS_SECRET_KEY, ""),
 ):
     banks = get_gocardless_banks(
         secret_id=gocardless_secret_id,
@@ -152,8 +171,8 @@ def banks(
 def generate_bank_auth_link(
     institution_id: str,
     *,
-    gocardless_secret_id: str = "",
-    gocardless_secret_key: str = "",
+    gocardless_secret_id: str = os.getenv(ENV_GOCARDLESS_SECRET_ID, ""),
+    gocardless_secret_key: str = os.getenv(ENV_GOCARDLESS_SECRET_KEY, ""),
 ):
     requisition = create_gocardless_requisition(
         secret_id=gocardless_secret_id,
@@ -176,8 +195,8 @@ def generate_bank_auth_link(
 def list_requisition_accounts(
     requisition_id: str,
     *,
-    gocardless_secret_id: str = "",
-    gocardless_secret_key: str = "",
+    gocardless_secret_id: str = os.getenv(ENV_GOCARDLESS_SECRET_ID, ""),
+    gocardless_secret_key: str = os.getenv(ENV_GOCARDLESS_SECRET_KEY, ""),
 ):
     requisition = get_gocardless_requisition(
         secret_id=gocardless_secret_id,
