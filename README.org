@@ -20,12 +20,21 @@ Currently in order to use the tool you need atleast Python version 3.11 and obta
 - YNAB access token (you can grab it from https://app.ynab.com/settings/developer)
 - YNAB Budget and Account IDs where you want to import data: https://api.ynab.com/v1#/Budgets/getBudgets and https://api.ynab.com/v1#/Accounts/getAccounts call could help with that (consult https://api.ynab.com/ if needed)
 
+Clone this repository:
+#+begin_src sh
+git clone https://github.com/axeoman/ynab-sync.git
+#+end_src
+
+Install with pip:
+#+begin_src sh
+python -m pip install .
+#+end_src
 
 After getting all what is needed and installing requirements (~pip install -r requirements.txt~) you can use ~upload~
 command in order to download transactions from GoCardless Account and upload them to YNAB budget/account:
 
 #+begin_src sh
-python -m ynab_sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
+ynab-sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
 #+end_src
   
 ** Docker usage
@@ -41,7 +50,7 @@ git clone https://github.com/axeoman/ynab-sync.git
 docker build -t ynab-sync .
 #+end_src
 
-- Run docker container. Note: it will grab all transaction from 7 days before current date (consult [[https://github.com/axeoman/ynab-sync/blob/main/Dockerfile][Dockerfile]] for details)
+- Run docker container. Note: it will grab all transactions from 7 days before current date (consult [[https://github.com/axeoman/ynab-sync/blob/main/Dockerfile][Dockerfile]] for details)
   
 #+begin_src sh
 docker run --env-file=sandbox.env --rm ynab-sync

@@ -9,7 +9,6 @@ COPY . /ynab-sync
 
 # Run the command to install any necessary dependencies
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install .
 # Run hello.py when the container launches
-CMD ["sh", "-c", "python -m ynab_sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'`"]
+CMD ["sh", "-c", "ynab-sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'`"]

@@ -1,3 +1,28 @@
+[project]
+name = "ynab-sync"
+version = "0.1.0"
+authors = [
+    { name="Aleksei Atavin", email="axeoman@gmail.com" },
+]
+description = "Allows you to sync between your bank account (if it is supported by GoCardless) and upload transactions to YNAB on regular basis (e.g. crontab job could suffice)"
+requires-python = ">=3.11"
+dependencies = [
+    "appeal",
+    "pydantic",
+    "requests",
+    "tabulate",
+]
+
+[project.scripts]
+ynab-sync = "ynab_sync.__main__:app.main"
+
+[project.urls]
+"Homepage" = "https://github.com/axeoman/ynab-sync"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [tool.black]
 
 
