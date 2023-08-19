@@ -5,13 +5,15 @@ from uuid import UUID
 
 from requests import HTTPError
 
-from ynab_sync.gocardless.models import (GoCardlessBankAccountData,
-                                         GoCardlessRequisition)
+from ynab_sync.gocardless.models import (
+    GoCardlessBankAccountData,
+    GoCardlessInstitution,
+    GoCardlessRequisition,
+)
 
 from .gocardless.api import GoCardLessAPI
 from .ynab.api import YnabAPI
-from .ynab.models import (YNABAccount, YNABBudget, YNABTransaction,
-                          YNABTransactions)
+from .ynab.models import YNABAccount, YNABBudget, YNABTransaction, YNABTransactions
 
 
 def get_gocardless_transactions(
@@ -110,7 +112,9 @@ def get_ynab_budget(token: str, budget_id: UUID) -> YNABBudget:
     return ynab_api.get_budget(budget_id=budget_id)
 
 
-def get_gocardless_banks(secret_id: str, secret_key: str, country: str):
+def get_gocardless_banks(
+    secret_id: str, secret_key: str, country: str
+) -> list[GoCardlessInstitution]:
     gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
     return gocardless_api.get_banks(country=country)
 

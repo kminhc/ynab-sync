@@ -12,13 +12,13 @@ So these are things that may irritate you:
 - No proper packaging: docker is probably fine but has no way change date range properly (only by editing Dockerfile instead)
 - poor error handling (there are a lot of cases when you *will* encounter hard to understand errors because of a random bug, unexpected API response, etc..)
 
-* Usage (Not that friendly yet, sorry!)
+Currently in order to use the tool you need atleast Python version 3.11.
 
-Currently in order to use the tool you need atleast Python version 3.11 and obtain these unique strings:
+You also need to obtain credentials:
 - Secret ID and Secret Key from your GoCardless account (you can create one free of charge)
-- Account ID from GoCardless API connected to your bank account (listed in Step 5 in [[https://developer.gocardless.com/bank-account-data/quick-start-guide][Quick Start Guide]] at GoCardless docs)
 - YNAB access token (you can grab it from https://app.ynab.com/settings/developer)
-- YNAB Budget and Account IDs where you want to import data: https://api.ynab.com/v1#/Budgets/getBudgets and https://api.ynab.com/v1#/Accounts/getAccounts call could help with that (consult https://api.ynab.com/ if needed)
+
+* Quickstart
 
 Clone this repository:
 #+begin_src sh
@@ -30,13 +30,42 @@ Install with pip:
 python -m pip install .
 #+end_src
 
-After getting all what is needed and installing requirements (~pip install -r requirements.txt~) you can use ~upload~
-command in order to download transactions from GoCardless Account and upload them to YNAB budget/account:
+Go through quickstart script in order to obtain GoCardless Account ID and YNAB Budget and Account ID needed for ~ynab-sync upload~ to work:
+#+begin_src sh
+ynab-sync quickstart
+#+end_src
+
+Run suggested by script command to add environment variables (example):
+#+begin_src sh
+export GOCARDLESS_SECRET_ID=fa264...67322
+export GOCARDLESS_SECRET_KEY=96d43...25200
+export GOCARDLESS_COUNTRY=FI
+export GOCARDLESS_ACCOUNT_ID=b62ca...fa9e2
+export YNAB_TOKEN=D5rS4..SICe8
+export YNAB_BUDGET_ID=6c4e2...bd8ad
+export YNAB_ACCOUNT_ID=adf05...262e
+#+end_src
+
+You can use ~upload~ command now in order to download transactions from GoCardless Account and upload them to YNAB budget/account:
 
 #+begin_src sh
 ynab-sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
 #+end_src
-  
+
+
+** Commands
+
+- ~ynab-sync upload~ - grabs transactions from GoCardless account for desired period and uploads it to YNAB. 
+- ~ynab-sync quickstart~ - interactive CLI that will help you to get account/budgets id and configure GoCardless integration with your bank. Note! You need to run this once per bank connection.
+
+If you curious you can also use those (~ynab-sync quickstart~ should be enough to start)  
+- ~ynab-sync gocardless banks~ - list of banks that needed for next step (auth)
+- ~ynab-sync gocardless generate_bank_auth_link~ - creates http link in order to auth with your bank 
+- ~ynab-sync gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is nessesary for ~upload~ command
+- ~ynab-sync ~ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
+- ~ynab-sync ynab accounts~ - lists accoutns in your YNAB budget (YNAB_ACCOUNT_ID)
+
+
 ** Docker usage
 Probably fastest way to use it in any environment is to use docker container (that is how I currently use it for myself).
 
@@ -57,12 +86,7 @@ docker run --env-file=sandbox.env --rm ynab-sync
 #+end_src
 
 ** Getting budget and account ids
-There are three commands that can help you with getting nessesary identifiers (probably buggy, but still)
-- ~gocardless banks~ - list of banks that needed for next step (auth)
-- ~gocardless generate_bank_auth_link~ - creates http link in order to auth with your bank 
-- ~gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is nessesary for ~upload~ command
-- ~ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
-- ~ynab accounts~ - lists accoutns in your YNAB budget (YNAB_ACCOUNT_ID)
+
 
 * Development
 I have an e2e happy path test: feel free to submit a PR :)

@@ -11,6 +11,7 @@ dependencies = [
     "pydantic",
     "requests",
     "tabulate",
+    "bullet"
 ]
 
 [project.scripts]
@@ -24,9 +25,11 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
+line-length = 125
 
 [tool.isort]
 profile = "black"
+line-length = 125
 
 [tool.pyright]
 include = ["ynab_sync"]
