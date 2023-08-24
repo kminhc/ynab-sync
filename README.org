@@ -1,18 +1,17 @@
-You Need a Budget (https://www.ynab.com/) does not have integrations with many Europe banks (e.g. Finland OP or SPankki) but there is atleast one free API that can grab data from them: GoCardless (https://gocardless.com/ formerly Nordigen).
+You Need a Budget (https://www.ynab.com/) does not have integrations with many European banks (e.g. Finland OP or SPankki) but there is at least one free API that can grab data from them: GoCardless (https://gocardless.com/ formerly Nordigen).
 
-This tool allows you to sync between your bank account (if it is supported by GoCardless) and upload transactions to YNAB on regular basis (e.g. crontab job could suffice). This is much better than converting CSVs from banks and upload it manually to YNAB on weekly basis.
+This tool allows you to sync between your bank account (if it is supported by GoCardless) and upload transactions to YNAB on a regular basis (e.g. crontab job could suffice). This is much better than converting CSVs from banks and uploading them manually to YNAB on a weekly basis.
 
-Personally I started to use that in July 2023 for my main budget with OP and SPankki banks and not facing any issues anymore with it (have a separate cron job for each bank account that runs ~upload~ command 5 times per day).
+Personally, I started to use that in July 2023 for my main budget with OP and SPankki banks and not facing any issues anymore with it (have a separate cron job for each bank account that runs ~upload~ command 5 times per day).
 
 * Before you start, disclaimer:
 This tool is still in MVP state: developed poorly and fastest way possible. Alpha version I would say.
 
 So these are things that may irritate you: 
-- Too hard to start for a non-developer (getting all thise IDs is still manual)
-- No proper packaging: docker is probably fine but has no way change date range properly (only by editing Dockerfile instead)
-- poor error handling (there are a lot of cases when you *will* encounter hard to understand errors because of a random bug, unexpected API response, etc..)
+- Too hard to start for a non-developer (getting all those IDs is still manual)
+- poor error handling (there are a lot of cases when you *will* encounter hard-to-understand errors because of a random bug, unexpected API response, etc..)
 
-Currently in order to use the tool you need atleast Python version 3.11.
+Currently in order to use the tool you need at least Python version 3.11.
 
 You also need to obtain credentials:
 - Secret ID and Secret Key from your GoCardless account (you can create one free of charge)
@@ -55,19 +54,19 @@ ynab-sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --yna
 
 ** Commands
 
-- ~ynab-sync upload~ - grabs transactions from GoCardless account for desired period and uploads it to YNAB. 
-- ~ynab-sync quickstart~ - interactive CLI that will help you to get account/budgets id and configure GoCardless integration with your bank. Note! You need to run this once per bank connection.
+- ~ynab-sync upload~ - grabs transactions from GoCardless account for the desired period and uploads it to YNAB. 
+- ~ynab-sync quickstart~ - interactive CLI that will help you to get an account/budget id and configure GoCardless integration with your bank. Note! You need to run this once per bank connection.
 
-If you curious you can also use those (~ynab-sync quickstart~ should be enough to start)  
+If you are curious you can also use those (~ynab-sync quickstart~ should be enough to start)  
 - ~ynab-sync gocardless banks~ - list of banks that needed for next step (auth)
 - ~ynab-sync gocardless generate_bank_auth_link~ - creates http link in order to auth with your bank 
-- ~ynab-sync gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is nessesary for ~upload~ command
+- ~ynab-sync gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is necessary for ~upload~ command
 - ~ynab-sync ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
-- ~ynab-sync ynab accounts~ - lists accoutns in your YNAB budget (YNAB_ACCOUNT_ID)
+- ~ynab-sync ynab accounts~ - lists accounts in your YNAB budget (YNAB_ACCOUNT_ID)
 
 
 ** Docker usage
-Probably fastest way to use it in any environment is to use docker container (that is how I currently use it for myself).
+Probably the fastest way to use it in any environment is to use a docker container (that is how I currently use it for myself).
 
 - clone this repository (or grab latest release if it's broken)
 #+begin_src sh
@@ -79,7 +78,7 @@ git clone https://github.com/axeoman/ynab-sync.git
 docker build -t ynab-sync .
 #+end_src
 
-- Run docker container. Note: it will grab all transactions from 7 days before current date (consult [[https://github.com/axeoman/ynab-sync/blob/main/Dockerfile][Dockerfile]] for details)
+- Run docker container. Note: it will grab all transactions from 7 days before the current date (consult [[https://github.com/axeoman/ynab-sync/blob/main/Dockerfile][Dockerfile]] for details)
   
 #+begin_src sh
 docker run --env-file=sandbox.env --rm ynab-sync
@@ -99,9 +98,9 @@ I have an e2e happy path test: feel free to submit a PR :)
 - [X] MVP 
 - [X] end-to-end automated tests based on results of MVP
 - [X] separate cli from logic
-- [X] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
+- [X] add useful commands (building links, getting GoCardless and YNAB account/budget information)
 - [X] add packaging
-- [X] add simple interactive command that provides you with .env file and all nessesary variables to get bank data
+- [X] add a simple interactive command that provides you with .env file and all necessary variables to get bank data
 - [ ] refactor API classes
 
 ** Initial requirements
@@ -114,11 +113,11 @@ I have an e2e happy path test: feel free to submit a PR :)
    - YNAB budget_id
    - YNAB account_id 
    - secrets from GoCardless
-   - account_id / name of the bank insitution to upload
+   - account_id / name of the bank institution to upload
    - transactions time range
 - Command should report number of imported and duplicated transactions
 - Nice to have:
-  - command that build authorization link (might be needed every 3 months)
+  - command that builds authorization link (might be needed every 3 months)
   - command that provide budget_id/account_id information (list of available with name)
 
     
