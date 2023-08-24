@@ -62,7 +62,7 @@ If you curious you can also use those (~ynab-sync quickstart~ should be enough t
 - ~ynab-sync gocardless banks~ - list of banks that needed for next step (auth)
 - ~ynab-sync gocardless generate_bank_auth_link~ - creates http link in order to auth with your bank 
 - ~ynab-sync gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is nessesary for ~upload~ command
-- ~ynab-sync ~ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
+- ~ynab-sync ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
 - ~ynab-sync ynab accounts~ - lists accoutns in your YNAB budget (YNAB_ACCOUNT_ID)
 
 
@@ -99,10 +99,10 @@ I have an e2e happy path test: feel free to submit a PR :)
 - [X] MVP 
 - [X] end-to-end automated tests based on results of MVP
 - [X] separate cli from logic
-- [ ] refactor API classes
 - [X] add usefull commands (building links, getting GoCardless and YNAB account/budget information)
-- [ ] add packaging
-- [ ] add simple interactive command that provides you with .env file and all nessesary variables to get bank data
+- [X] add packaging
+- [X] add simple interactive command that provides you with .env file and all nessesary variables to get bank data
+- [ ] refactor API classes
 
 ** Initial requirements
 - Upload fresh bank transactions to YNAB
