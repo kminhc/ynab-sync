@@ -3,8 +3,7 @@ from datetime import date
 
 import requests
 
-from .models import (GoCardlessBankAccountData, GoCardlessInstitution,
-                     GoCardlessRequisition)
+from .models import GoCardlessBankAccountData, GoCardlessInstitution, GoCardlessRequisition
 
 BASE_URL = "https://bankaccountdata.gocardless.com/api/v2"
 
@@ -32,9 +31,7 @@ class GoCardLessAPI:
     def _requests_session(self) -> requests.Session:
         if self._request_session is None:
             self._request_session = requests.Session()
-            self._request_session.headers.update(
-                {"Authorization": f"Bearer {self._get_token()}"}
-            )
+            self._request_session.headers.update({"Authorization": f"Bearer {self._get_token()}"})
 
         return self._request_session
 
@@ -70,9 +67,7 @@ class GoCardLessAPI:
         return GoCardlessBankAccountData(**json_data)
 
     def get_banks(self, country: str) -> list[GoCardlessInstitution]:
-        response = self._requests_session.get(
-            f"{BASE_URL}/institutions/?country={country}"
-        )
+        response = self._requests_session.get(f"{BASE_URL}/institutions/?country={country}")
         response.raise_for_status()
         json_data = response.json()
         return [GoCardlessInstitution(**institution) for institution in json_data]
@@ -84,9 +79,7 @@ class GoCardLessAPI:
         response.raise_for_status()
         return GoCardlessRequisition(**response.json())
 
-    def post_requisition(
-        self, redirect: str, institution_id: str
-    ) -> GoCardlessRequisition:
+    def post_requisition(self, redirect: str, institution_id: str) -> GoCardlessRequisition:
         response = self._requests_session.post(
             f"{BASE_URL}/requisitions/",
             json={"redirect": redirect, "institution_id": institution_id},

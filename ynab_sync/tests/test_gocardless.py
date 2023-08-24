@@ -6,8 +6,7 @@ import pytest
 
 from ..gocardless.api import GoCardLessAPI
 from ..gocardless.models import GoCardlessBankAccountData
-from .data.gocardless import \
-    TEST_GOCARDLESS_TRANSACTIONS as GOCARDLESS_TRANSACTIONS
+from .data.gocardless import TEST_GOCARDLESS_TRANSACTIONS as GOCARDLESS_TRANSACTIONS
 
 SECRET_ID = os.getenv("GOCARDLESS_SECRET_ID", "")
 SECRET_KEY = os.getenv("GOCARDLESS_SECRET_KEY", "")

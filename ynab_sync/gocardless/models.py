@@ -17,12 +17,8 @@ class GoCardlessTransaction(BaseModel):
     debtor_name: str | None = Field(alias="debtorName", default=None)
     creditor_name: str | None = Field(alias="creditorName", default=None)
     debtor_account: dict | None = Field(alias="debtorAccount", default=None)
-    remittance_information_unstructured: str = Field(
-        alias="remittanceInformationUnstructured", default=""
-    )
-    proprietary_bank_transaction_code: str | None = Field(
-        alias="proprietaryBankTransactionCode", default=None
-    )
+    remittance_information_unstructured: str = Field(alias="remittanceInformationUnstructured", default="")
+    proprietary_bank_transaction_code: str | None = Field(alias="proprietaryBankTransactionCode", default=None)
     bank_transaction_code: str | None = Field(alias="bankTransactionCode", default=None)
 
 

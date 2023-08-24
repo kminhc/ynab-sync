@@ -28,17 +28,13 @@ def get_gocardless_transactions(
     try:
         gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
 
-        return gocardless_api.get_transactions(
-            account_id=account_id, date_from=date_from, date_to=date_to
-        )
+        return gocardless_api.get_transactions(account_id=account_id, date_from=date_from, date_to=date_to)
     except HTTPError as exc:
         log.exception("GoCardless returned HTTPError", exc_info=exc)
         raise
 
 
-def prepare_ynab_transactions(
-    gocardless_bank_data: GoCardlessBankAccountData, ynab_account_id: UUID
-) -> YNABTransactions:
+def prepare_ynab_transactions(gocardless_bank_data: GoCardlessBankAccountData, ynab_account_id: UUID) -> YNABTransactions:
     log = logging.getLogger("logic.prepare_ynab_transactions")
     transactions = []
     occurances = defaultdict(int)
@@ -57,9 +53,7 @@ def prepare_ynab_transactions(
                 account_id=ynab_account_id,
                 date=gocardless_transaction.booking_date,
                 amount=amount,
-                payee_name=gocardless_transaction.creditor_name
-                or gocardless_transaction.debtor_name
-                or "",
+                payee_name=gocardless_transaction.creditor_name or gocardless_transaction.debtor_name or "",
                 memo=memo,
                 cleared="cleared",
                 approved=False,
@@ -88,9 +82,7 @@ def upload_to_ynab(
     transactions_json = transactions.model_dump_json()
 
     try:
-        response = ynab_api.post_transactions(
-            budget_id=budget_id, json_data=transactions_json
-        )
+        response = ynab_api.post_transactions(budget_id=budget_id, json_data=transactions_json)
     except HTTPError as exc:
         log.exception(
             "YNAB returned HTTPError: payload: %s",
@@ -112,9 +104,7 @@ def get_ynab_budget(token: str, budget_id: UUID) -> YNABBudget:
     return ynab_api.get_budget(budget_id=budget_id)
 
 
-def get_gocardless_banks(
-    secret_id: str, secret_key: str, country: str
-) -> list[GoCardlessInstitution]:
+def get_gocardless_banks(secret_id: str, secret_key: str, country: str) -> list[GoCardlessInstitution]:
     gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
     return gocardless_api.get_banks(country=country)
 
@@ -126,13 +116,9 @@ def create_gocardless_requisition(
     redirect: str,
 ) -> GoCardlessRequisition:
     gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
-    return gocardless_api.post_requisition(
-        redirect=redirect, institution_id=institution_id
-    )
+    return gocardless_api.post_requisition(redirect=redirect, institution_id=institution_id)
 
 
-def get_gocardless_requisition(
-    secret_id: str, secret_key: str, requisition_id: str
-) -> GoCardlessRequisition:
+def get_gocardless_requisition(secret_id: str, secret_key: str, requisition_id: str) -> GoCardlessRequisition:
     gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
     return gocardless_api.get_requisition(requisition_id=requisition_id)

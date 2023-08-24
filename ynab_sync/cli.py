@@ -24,7 +24,7 @@ import logging
 from .quickstart import quickstart  # noqa
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s %(name)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
@@ -96,9 +96,7 @@ def upload(
         ynab_account_id=UUID(ynab_account_id),
     )
 
-    upload_to_ynab(
-        transactions=ynab_transactions, token=ynab_token, budget_id=UUID(ynab_budget_id)
-    )
+    upload_to_ynab(transactions=ynab_transactions, token=ynab_token, budget_id=UUID(ynab_budget_id))
 
 
 @app.command()
@@ -188,9 +186,7 @@ def generate_bank_auth_link(
         "Open this link in your browser and proceed with authorization:",
         requisition.link,
     )
-    print(
-        "Run `gocardless list_requisition_accounts` afterwards to get GOCARDLESS_ACCOUNT_ID"
-    )
+    print("Run `gocardless list_requisition_accounts` afterwards to get GOCARDLESS_ACCOUNT_ID")
 
 
 @app.command("gocardless").command()

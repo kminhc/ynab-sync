@@ -8,8 +8,7 @@ import responses
 from ..cli import upload
 from ..gocardless.api import BASE_URL as GOCARDLESS_BASE_URL
 from ..tests.data.gocardless import TEST_GOCARDLESS_TRANSACTIONS
-from ..tests.data.ynab import (TEST_YNAB_REQUEST_TRANSACTIONS,
-                               TEST_YNAB_RESPONSE_TRANSACTIONS)
+from ..tests.data.ynab import TEST_YNAB_REQUEST_TRANSACTIONS, TEST_YNAB_RESPONSE_TRANSACTIONS
 from ..ynab.api import BASE_URL as YNAB_BASE_URL
 
 TEST_YNAB_TOKEN = "TEST_YNAB_TOKEN"
@@ -52,9 +51,7 @@ def fixture_gocardless_get_transactions() -> None:
         json=json.loads(TEST_GOCARDLESS_TRANSACTIONS),
         status=HTTPStatus.OK,
         match=[
-            responses.matchers.header_matcher(
-                {"Authorization": f"Bearer {TEST_GOCARDLESS_ACCESS_TOKEN}"}
-            ),
+            responses.matchers.header_matcher({"Authorization": f"Bearer {TEST_GOCARDLESS_ACCESS_TOKEN}"}),
             # TODO: add date_from/date_to matcher
         ],
     )
@@ -68,12 +65,8 @@ def fixture_ynab_post_transactions() -> None:
         json=json.loads(TEST_YNAB_RESPONSE_TRANSACTIONS),
         status=HTTPStatus.OK,
         match=[
-            responses.matchers.header_matcher(
-                {"Authorization": f"Bearer {TEST_YNAB_TOKEN}"}
-            ),
-            responses.matchers.json_params_matcher(
-                json.loads(TEST_YNAB_REQUEST_TRANSACTIONS)
-            ),
+            responses.matchers.header_matcher({"Authorization": f"Bearer {TEST_YNAB_TOKEN}"}),
+            responses.matchers.json_params_matcher(json.loads(TEST_YNAB_REQUEST_TRANSACTIONS)),
         ],
     )
 

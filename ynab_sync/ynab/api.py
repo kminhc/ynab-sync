@@ -16,9 +16,7 @@ class YnabAPI:
     def _requests_session(self) -> requests.Session:
         if self._request_session is None:
             self._request_session = requests.Session()
-            self._request_session.headers.update(
-                {"Authorization": f"Bearer {self._access_token}"}
-            )
+            self._request_session.headers.update({"Authorization": f"Bearer {self._access_token}"})
 
         return self._request_session
 
