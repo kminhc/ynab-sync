@@ -1,23 +1,24 @@
 You Need a Budget (https://www.ynab.com/) does not have integrations with many European banks (e.g. Finland OP or SPankki) but there is at least one free API that can grab data from them: GoCardless (https://gocardless.com/ formerly Nordigen).
 
-This tool allows you to sync between your bank account (if it is supported by GoCardless) and upload transactions to YNAB on a regular basis (e.g. crontab job could suffice). This is much better than converting CSVs from banks and uploading them manually to YNAB on a weekly basis.
+This tool allows you to upload transactions from your bank account (if it is supported by GoCardless) to YNAB budget on a regular basis (e.g. crontab job could suffice). This is much easier than converting CSVs from banks and uploading them manually to YNAB.
 
-Personally, I started to use that in July 2023 for my main budget with OP and SPankki banks and not facing any issues anymore with it (have a separate cron job for each bank account that runs ~upload~ command 5 times per day).
+Personally, I started to use that in July 2023 for my main YNAB Budget with OP and SPankki banks and not facing any issues anymore with it (have a separate cron job for each bank account that runs ~upload~ command 5 times per day).
 
-* Before you start, disclaimer:
+* Disclaimer
 This tool is still in MVP state: developed poorly and fastest way possible. Alpha version I would say.
 
 So these are things that may irritate you: 
 - Too hard to start for a non-developer (getting all those IDs is still manual)
 - poor error handling (there are a lot of cases when you *will* encounter hard-to-understand errors because of a random bug, unexpected API response, etc..)
-
+  
+* Before you start
 Currently in order to use the tool you need at least Python version 3.11.
 
 You also need to obtain credentials:
 - Secret ID and Secret Key from your GoCardless account (you can create one free of charge)
 - YNAB access token (you can grab it from https://app.ynab.com/settings/developer)
 
-* Quickstart
+* How-to
 
 Clone this repository:
 #+begin_src sh
