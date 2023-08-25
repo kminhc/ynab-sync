@@ -4,6 +4,7 @@ from datetime import date
 from uuid import UUID
 
 from requests import HTTPError
+from tabulate import tabulate
 
 from ynab_sync.gocardless.models import (
     GoCardlessBankAccountData,
@@ -122,3 +123,21 @@ def create_gocardless_requisition(
 def get_gocardless_requisition(secret_id: str, secret_key: str, requisition_id: str) -> GoCardlessRequisition:
     gocardless_api = GoCardLessAPI(secret_id=secret_id, secret_key=secret_key)
     return gocardless_api.get_requisition(requisition_id=requisition_id)
+
+
+def print_upload_dry_run(ynab_transations: YNABTransactions) -> None:
+    print("\nThis transactions have been returned by GoCardless API:\n")
+    table = tabulate(
+        [
+            (
+                transaction.date,
+                transaction.payee_name.replace("\n", " "),
+                transaction.memo.replace("\n", " "),
+                transaction.amount,
+            )
+            for transaction in ynab_transations.transactions
+        ],
+        headers=["DATE", "PAYEE_NAME", "MEMO", "AMOUNT"],
+        tablefmt="github",
+    )
+    print(table)

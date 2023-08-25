@@ -37,6 +37,7 @@ from .logic import (
     get_ynab_budget,
     get_ynab_budgets,
     prepare_ynab_transactions,
+    print_upload_dry_run,
     upload_to_ynab,
 )
 
@@ -52,6 +53,7 @@ def upload(
     gocardless_secret_id: str = os.getenv(ENV_GOCARDLESS_SECRET_ID, ""),
     gocardless_secret_key: str = os.getenv(ENV_GOCARDLESS_SECRET_KEY, ""),
     gocardless_account_id: str = os.getenv(ENV_GOCARDLESS_ACCOUNT_ID, ""),
+    dry_run: bool = False,
 ):
     log = logging.getLogger("cli.upload")
     # TODO: Get this from appeal?
@@ -95,6 +97,10 @@ def upload(
         gocardless_bank_data=gocardless_bank_account_data,
         ynab_account_id=UUID(ynab_account_id),
     )
+
+    if dry_run:
+        print_upload_dry_run(ynab_transactions)
+        return
 
     upload_to_ynab(transactions=ynab_transactions, token=ynab_token, budget_id=UUID(ynab_budget_id))
 
