@@ -53,7 +53,7 @@ def upload(
     gocardless_secret_id: str = os.getenv(ENV_GOCARDLESS_SECRET_ID, ""),
     gocardless_secret_key: str = os.getenv(ENV_GOCARDLESS_SECRET_KEY, ""),
     gocardless_account_id: str = os.getenv(ENV_GOCARDLESS_ACCOUNT_ID, ""),
-    dry_run: bool = False,
+    dry_run=False,
 ):
     log = logging.getLogger("cli.upload")
     # TODO: Get this from appeal?

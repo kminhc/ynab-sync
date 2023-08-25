@@ -156,7 +156,7 @@ def ynab_prompt(debug: bool = False):
 
 
 @app.command()
-def quickstart(*, debug: bool = False):
+def quickstart(*, debug=False):
     print(
         "This tool will help you to generate .env file that ",
         "is nessesarry for `ynab-sync` upload to work.\n",
