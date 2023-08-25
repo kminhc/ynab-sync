@@ -45,12 +45,16 @@ export YNAB_BUDGET_ID=6c4e2...bd8ad
 export YNAB_ACCOUNT_ID=adf05...262e
 #+end_src
 
-You can use ~upload~ command now in order to download transactions from GoCardless Account and upload them to YNAB budget/account:
-
+You can use ~upload~ command now in order to download transactions from GoCardless Account and upload them to YNAB budget/account (remove --dry-run if you happy with result table):
 #+begin_src sh
-ynab-sync upload --ynab-token=$YNAB_TOKEN --ynab-budget-id=$YNAB_BUDGET_ID --ynab-account-id=$YNAB_ACCOUNT_ID --gocardless-secret-id=$GOCARDLESS_SECRET_ID --gocardless-secret-key=$GOCARDLESS_SECRET_KEY --gocardless-account-id=$GOCARDLESS_ACCOUNT_ID --date-from=`date -d '-7 day' '+%Y-%m-%d'` 
+ynab-sync upload --date-from=2023-08-01 --dry-run 
 #+end_src
 
+You could also pass credentials and ids directly to the command:
+#+begin_src sh
+$ ynab-sync help upload
+usage: ynab-sync upload [-d|--date-from] [--date-to] [-y|--ynab-token] [--ynab-budget-id] [--ynab-account-id] [-g|--gocardless-secret-id] [--gocardless-secret-key] [--gocardless-account-id] [--dry-run]
+#+end_src
 
 ** Commands
 
@@ -63,7 +67,6 @@ If you are curious you can also use those (~ynab-sync quickstart~ should be enou
 - ~ynab-sync gocardless list_requisition_account~ - get GOCARDLESS_ACCOUNT_ID that is necessary for ~upload~ command
 - ~ynab-sync ynab budgets~ - lists budgets in your YNAB account (YNAB_BUDGET_ID)
 - ~ynab-sync ynab accounts~ - lists accounts in your YNAB budget (YNAB_ACCOUNT_ID)
-
 
 ** Docker usage
 Probably the fastest way to use it in any environment is to use a docker container (that is how I currently use it for myself).
