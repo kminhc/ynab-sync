@@ -41,7 +41,7 @@ def prepare_ynab_transactions(gocardless_bank_data: GoCardlessBankAccountData, y
     occurances = defaultdict(int)
     for gocardless_transaction in gocardless_bank_data.transactions.booked:
         amount = int(gocardless_transaction.transaction_amount.amount * 1000)
-        ynab_import_key = f"YNAB:{amount}:{gocardless_transaction.booking_date}"
+        ynab_import_key = f"YNAB:{amount}:{gocardless_transaction.value_date}"
 
         memo = (
             gocardless_transaction.remittance_information_unstructured
@@ -52,7 +52,7 @@ def prepare_ynab_transactions(gocardless_bank_data: GoCardlessBankAccountData, y
         transactions.append(
             YNABTransaction(
                 account_id=ynab_account_id,
-                date=gocardless_transaction.booking_date,
+                date=gocardless_transaction.value_date,
                 amount=amount,
                 payee_name=gocardless_transaction.creditor_name or gocardless_transaction.debtor_name or "",
                 memo=memo,
