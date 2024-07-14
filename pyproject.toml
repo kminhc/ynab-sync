@@ -1,8 +1,9 @@
 [project]
 name = "ynab-sync"
-version = "0.1.0"
+version = "0.3.0"
 authors = [
     { name="Aleksei Atavin", email="axeoman@gmail.com" },
+    { name="Kong Minh Cap", email="kminhc@gmail.com" },
 ]
 description = "Allows you to sync between your bank account (if it is supported by GoCardless) and upload transactions to YNAB on regular basis (e.g. crontab job could suffice)"
 requires-python = ">=3.11"
