@@ -1,7 +1,8 @@
 from datetime import date, datetime
 from decimal import Decimal
+from typing import Optional, Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class GoCardlessTransactionAmount(BaseModel):
@@ -11,20 +12,40 @@ class GoCardlessTransactionAmount(BaseModel):
 
 class GoCardlessTransaction(BaseModel):
     transaction_id: str = Field(alias="transactionId")
-    booking_date: date = Field(alias="bookingDate")
-    value_date: date = Field(alias="valueDate")
+    booking_date: Optional[date] = Field(alias="bookingDate", default=None)
+    value_date: Optional[date] = Field(alias="valueDate", default=None)
     transaction_amount: GoCardlessTransactionAmount = Field(alias="transactionAmount")
-    debtor_name: str | None = Field(alias="debtorName", default=None)
-    creditor_name: str | None = Field(alias="creditorName", default=None)
-    debtor_account: dict | None = Field(alias="debtorAccount", default=None)
+    debtor_name: Optional[str] = Field(alias="debtorName", default=None)
+    creditor_name: Optional[str] = Field(alias="creditorName", default=None)
+    debtor_account: Optional[dict] = Field(alias="debtorAccount", default=None)
     remittance_information_unstructured: str = Field(alias="remittanceInformationUnstructured", default="")
-    proprietary_bank_transaction_code: str | None = Field(alias="proprietaryBankTransactionCode", default=None)
-    bank_transaction_code: str | None = Field(alias="bankTransactionCode", default=None)
+    proprietary_bank_transaction_code: Optional[str] = Field(alias="proprietaryBankTransactionCode", default=None)
+
+
+    @model_validator(mode='before')
+    @classmethod
+    def set_default_dates(cls, data: Any ):
+        booking_date = data.get('bookingDate')
+        value_date = data.get('valueDate')
+
+        if not booking_date and not value_date:
+            raise ValueError('At least one of bookingDate or valueDate must be provided')
+
+        if not booking_date:
+            data['bookingDate'] = value_date
+        if not value_date:
+            data['valueDate'] = booking_date
+        return data
+
+    bank_transaction_code: Optional[str] = Field(alias="bankTransactionCode", default=None)
+
+class GoCardlessPendingTransaction(GoCardlessTransaction):
+    transaction_id: Optional[str] = Field(alias="transactionId", default=None)
 
 
 class GoCardlessTransactions(BaseModel):
     booked: list[GoCardlessTransaction]
-    pending: list[dict]
+    pending: list[GoCardlessPendingTransaction]
 
 
 class GoCardlessBankAccountData(BaseModel):
