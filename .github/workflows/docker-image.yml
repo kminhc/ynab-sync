@@ -38,7 +38,7 @@ jobs:
         run: |
           VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' pyproject.toml)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-       # Check if the tag already exists
+      # Check if the tag already exists
       - name: Check for existing tag
         id: check_tag
         run: |
@@ -48,6 +48,7 @@ jobs:
           else
             echo "Tag v${VERSION} does not exist."
             echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
       
       # Create a new tag if it does not exist
       - name: Create and push tag
